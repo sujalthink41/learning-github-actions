@@ -1,4 +1,4 @@
-name : "Greeting Workflow"
+name : Greeting Workflow
 on : push
 jobs:
     greet:
