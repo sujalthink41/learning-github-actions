@@ -42,6 +42,7 @@ jobs:
               run: npm run test
 
     build:
+        needs: test
         runs-on: ubuntu-latest
         steps:
             - name: Build for the code
