@@ -1,5 +1,4 @@
-name : Deploying Dist
-# on : [push,workflow_dispatch]
+name : Deploying React App on GitHub Pages
 on : 
     push: 
         branches: 
@@ -15,19 +14,12 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Get Code 
-            #   run: |
-            #     echo "Cloning repo.." 
-            #     echo "${{toJson(github)}}" 
-            #     git clone https://github.com/${{github.repository}}.git
               uses: actions/checkout@v4    
-            
+
             - name: Install Node 20
               uses: actions/setup-node@v4
               with: 
                 node-version: 20
-
-            - name: print node version 
-              run: node -v
 
             - name: Cache Dependencies
               uses: actions/cache@v4
@@ -47,6 +39,7 @@ jobs:
         steps:
             - name: Build for the code
               uses: actions/checkout@v4
+
             - name: Install Node 20 
               uses: actions/setup-node@v4
               with: 
@@ -65,23 +58,32 @@ jobs:
               run: npm run build
             
             - name: Upload Dist Artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-pages-artifact@v3
               with:
-                name: dist-files
+                name: github-pages
                 path: dist
 
     deploy:
         needs: build
         runs-on: ubuntu-latest
+        # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+        permissions:
+            pages: write      # to deploy to Pages
+            id-token: write   # to verify the deployment originates from an appropriate source
+
+        # Deploy to the github-pages environment
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+
+        # Specify runner + deployment step
         steps:
-            - name: Download Dist Artifact
-              uses: actions/download-artifact@v4
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4
               with:
-                name: dist-files
-                path: dist
-            
-            - name: Deploy
-              run: echo "Deploy successfull"
+                token: ${{secrets.GITHUB_TOKEN}}
+
               
                 
 
