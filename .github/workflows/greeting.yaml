@@ -1,0 +1,9 @@
+name : "Greeting Workflow"
+on : push
+jobs:
+    greet:
+        runs-on: ubuntu-latest
+        steps:
+            - name: "Hello User"
+              run: echo "Hello User!"
+
