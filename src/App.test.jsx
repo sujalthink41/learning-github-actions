@@ -13,6 +13,6 @@ describe('App', () => {
   it('has the correct styling classes', () => {
     render(<App />);
     const divElement = screen.getByText(/hello world/i);
-    expect(divElement).toHaveClass('text-3xl', 'font-bold', 'underline', 'text-center');
+    expect(divElement).to('text-3xl', 'font-bold', 'underline', 'text-center');
   });
 });
